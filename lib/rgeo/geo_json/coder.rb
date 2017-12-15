@@ -37,7 +37,7 @@ module RGeo
         @entity_factory = opts[:entity_factory] || EntityFactory.instance
         @json_parser = opts[:json_parser]
         case @json_parser
-        when :json
+        when :json, nil
           require "json" unless defined?(JSON)
           @json_parser = proc { |str| JSON.parse(str) }
         when :yajl
@@ -46,7 +46,7 @@ module RGeo
         when :active_support
           require "active_support/json" unless defined?(ActiveSupport::JSON)
           @json_parser = proc { |str| ActiveSupport::JSON.decode(str) }
-        when Proc, nil
+        when Proc
           # Leave as is
         else
           raise ::ArgumentError, "Unrecognzied json_parser: #{@json_parser.inspect}"
